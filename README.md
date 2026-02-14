@@ -51,13 +51,13 @@ The MC33 C header-only library is an open source software. The distribution and 
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;see the file marching_cubes_33_c.h for the description of the `_GRD` structure.
 
-3. create a MC33 structure using the `create_MC33` function:
+3. Create a MC33 structure using the `create_MC33` function:
 ```c
 	MC33 *M;
 	M = create_MC33(G);
 ```
 
-4. alculate the isosurface with the MC33 algorithm:
+4. Calculate the isosurface with the MC33 algorithm:
 ```c
 	surface* S;
 	S = calculate_isosurface(M, isovalue);
