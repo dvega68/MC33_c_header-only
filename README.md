@@ -23,7 +23,7 @@ The MC33 C header-only library is an open source software. The distribution and 
 	_GRD* G;
 	G = read_dat_file("filename.dat");
 ```
-	or create a `_GRD` from your own grid data, for example:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or create a `_GRD` from your own grid data, for example:
 ```c
 	unsigned int nx, ny, nz, i, j, k, l;
 	double r0[3] = {-4, -4, -4}, d[3] = {0.04, 0.04, 0.04};
@@ -47,7 +47,7 @@ The MC33 C header-only library is an open source software. The distribution and 
 	memcpy(G->r0, r0, sizeof r0);
 	memcpy(G->d, d, sizeof d);
 ```
-	see the file marching_cubes_33_c.h for the description of the `_GRD` structure.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;see the file marching_cubes_33_c.h for the description of the `_GRD` structure.
 
 3. create a MC33 structure using the `create_MC33` function:
 ```c
