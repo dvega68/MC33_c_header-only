@@ -7,7 +7,7 @@ LX11R    = -lXext -lX11
 LIBS     = -lGLU -lGL -ldl $(LFLTK) $(LX11R) -lm -s
 CPPINCS  =
 BIN      = TestMC33
-OPTIM		 = -Ofast -m64 -Wall -Wextra -funroll-loops
+OPTIM    = -Ofast -m64 -Wall -Wextra -funroll-loops
 CPPFLAGS = $(CPPINCS) -std=c++11 $(OPTIM)
 LDFLAGS  = $(LIBS)
 RM       = rm -f
@@ -20,7 +20,6 @@ RM       = rm -f
 all:	all-before $(BIN) all-after
 
 $(BIN): $(OBJ)
-	#$(SOURCE)
 	$(CPP) -o $(BIN) $(OBJ) $(LDFLAGS)
 
 clean: clean-custom
