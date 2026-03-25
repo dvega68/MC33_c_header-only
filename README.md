@@ -1,10 +1,10 @@
-### Feel free to use the MC33 C header-only library.
+### Feel free to use the Marching cubes 33 C header-only library.
 
 ---
 
 #### INFO:
 
-The header-only marching_cubes_33_c.h file contains all the code for the [MC33 C library version 5.4](https://facyt-quimicomp.neocities.org/MC33_libraries.html), which is based on the paper:  
+The header-only marching_cubes_33_c.h file contains all the code for the [MC33 C library version 5.5](https://facyt-quimicomp.neocities.org/MC33_libraries.html), which is based on the paper:  
 Vega, D., Abache, J., Coll, D., [A Fast and Memory-Saving Marching Cubes 33 implementation with the correct interior test](http://jcgt.org/published/0008/03/01), *Journal of Computer Graphics Techniques (JCGT)*, vol. 8, no. 3, 1-18, 2019.
 
 The MC33 C header-only library is an open source software. The distribution and use rights are under the terms of the [MIT license](https://opensource.org/licenses/MIT), described in the file "LICENSE.txt".
@@ -63,7 +63,7 @@ The MC33 C header-only library is an open source software. The distribution and 
 	S = calculate_isosurface(M, isovalue);
 ```
 
-5. Free de allocated memory for `surface` struct:
+5. Free the allocated memory for `surface` struct:
 ```c
 	free_surface_memory(S);
 ```
@@ -73,7 +73,6 @@ The MC33 C header-only library is an open source software. The distribution and 
 	free_MC33(M);
 	free_memory_grd(G);
 ```
-
 
 See marching_cubes_33_c.h for a description of other functions.
 
@@ -113,6 +112,8 @@ There are some options that can be modified. You can do it by editing the "CUSTO
 	```c
 	#define DEFAULT_SURFACE_COLOR 0xFF18A0C8// RGBA 0xAABBGGRR: red 200, green 160, blue 24
 	```
+
+5. There are other two macros that can be changed: `USE_INTERNAL_SIGNBIT` and `USE_MM_RSQRT_SS`.
 
 ---
 
@@ -160,12 +161,12 @@ double fs(double x, double y, double z) {
                           3.5, 3.5, 3.5, // coordinates of the opposite corner
                           0.03, 0.03, 0.03, // steps
                           fs);
-  MC33 *MC = 0;
+  MC33 *M = 0;
 	if (G)
-		MC = create_MC33(G);
+		M = create_MC33(G);
   .
   .
-	free_MC33(MC); // release the memory occupied by MC
+	free_MC33(M); // release the memory occupied by M
 	free_memory_grd(G); // release the memory occupied by G
 ```
 
@@ -179,7 +180,7 @@ To display the surface with OpenGL:
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 
-	glVertexPointer(3, GL_FLOAT, 0, &S->V[0]);
+	glVertexPointer(3, (GRD_TYPE_SIZE == 8? GL_DOUBLE: GL_FLOAT), 0, &S->V[0]);
 	glNormalPointer(GL_FLOAT, 0, &S->N[0]);
 	glColorPointer(4, GL_UNSIGNED_BYTE, 0, &S->color[0]);
 
@@ -198,7 +199,11 @@ or:
 		while (--i) {
 			glNormal3fv(S->N[*(++t)]);
 			glColor4ubv((unsigned char *)&(S->color[*t]));
+	#if GRD_TYPE_SIZE == 8
+			glVertex3dv(S->V[*t]);
+	#else
 			glVertex3fv(S->V[*t]);
+	#endif
 		}
 	glEnd();
 ```
@@ -211,7 +216,7 @@ where `M` is a pointer to the `MC33` structure, `iso` is the isovalue (a "`float
 
 See [this link](https://stackoverflow.com/questions/65066235/estimating-size-of-marching-cubes-output-geometry)
 
-Two new funtions where added to save the surface: `write_obj_s` and `write_ply_s`, the first saves the surface data in a Wavefront .obj file, the other saves the data in a "Polygon File Format" (.ply) file.
+Two funtions where added to save the surface: `write_obj_s` and `write_ply_s`, the first saves the surface data in a Wavefront .obj file, the other saves the data in a "Polygon File Format" (.ply) file.
 
 ---
 
